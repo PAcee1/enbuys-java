@@ -25,4 +25,5 @@ public interface OrderMapper {
     //获取订单集合
     List<Order> selectByUserId(@Param("userId")Integer userId);
 
+    Order selectByOrderNo(Long orderNo);
 }

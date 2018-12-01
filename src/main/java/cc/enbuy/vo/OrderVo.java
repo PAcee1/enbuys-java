@@ -14,6 +14,7 @@ public class OrderVo {
 
     private BigDecimal payment;
 
+
     private Integer paymentType;
 
     private String paymentTypeDesc;
@@ -40,6 +41,7 @@ public class OrderVo {
     private String imageHost;
     private Integer shippingId;
     private String receiverName;
+    private String reciverPhone;
 
     private ShippingVo shippingVo;
 
@@ -177,5 +179,13 @@ public class OrderVo {
 
     public void setShippingVo(ShippingVo shippingVo) {
         this.shippingVo = shippingVo;
+    }
+
+    public String getReceiverPhone() {
+        return reciverPhone;
+    }
+
+    public void setReceiverPhone(String reciverPhone) {
+        this.reciverPhone = reciverPhone;
     }
 }

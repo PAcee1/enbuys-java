@@ -9,7 +9,7 @@ import com.github.pagehelper.PageInfo;
  * @Data: 2018/11/28 15:19
  * @Version: v1.0
  */
-public interface IProcutService {
+public interface IProductService {
 
     ServerResponse<ProductDetailVo> getProdcutDetail(Integer productId);
 

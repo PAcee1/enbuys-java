@@ -1,7 +1,7 @@
 package cc.enbuy.controller.portal;
 
 import cc.enbuy.common.ServerResponse;
-import cc.enbuy.service.IProcutService;
+import cc.enbuy.service.IProductService;
 import cc.enbuy.vo.ProductDetailVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ProductController {
 
     @Autowired
-    private IProcutService procutService;
+    private IProductService procutService;
 
     /**
      * 根据id获取商品详情

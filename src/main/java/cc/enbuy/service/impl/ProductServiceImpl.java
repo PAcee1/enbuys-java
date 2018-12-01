@@ -3,13 +3,12 @@ package cc.enbuy.service.impl;
 import cc.enbuy.common.Const;
 import cc.enbuy.common.ResponseCode;
 import cc.enbuy.common.ServerResponse;
-import cc.enbuy.dao.CartMapper;
 import cc.enbuy.dao.CategoryMapper;
 import cc.enbuy.dao.ProductMapper;
 import cc.enbuy.pojo.Category;
 import cc.enbuy.pojo.Product;
 import cc.enbuy.service.ICategoryService;
-import cc.enbuy.service.IProcutService;
+import cc.enbuy.service.IProductService;
 import cc.enbuy.util.DateTimeUtil;
 import cc.enbuy.util.PropertiesUtil;
 import cc.enbuy.vo.ProductDetailVo;
@@ -30,7 +29,7 @@ import java.util.List;
  * @Version: v1.0
  */
 @Service
-public class ProductServiceImpl implements IProcutService {
+public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ProductMapper productMapper;

@@ -1,8 +1,10 @@
 package cc.enbuy.service.impl;
 
+import cc.enbuy.common.Const;
 import cc.enbuy.common.ServerResponse;
 import cc.enbuy.dao.ShippingMapper;
 import cc.enbuy.pojo.Shipping;
+import cc.enbuy.pojo.User;
 import cc.enbuy.service.IShippingService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -103,5 +105,6 @@ public class ShippingService implements IShippingService {
         PageInfo pageInfo = new PageInfo(shippingList);
         return ServerResponse.createBySuccess(pageInfo);
     }
+
 }
 

@@ -26,4 +26,7 @@ public interface OrderMapper {
     List<Order> selectByUserId(@Param("userId")Integer userId);
 
     Order selectByOrderNo(Long orderNo);
+
+    //获取全部订单
+    List<Order> selectAllOrder();
 }

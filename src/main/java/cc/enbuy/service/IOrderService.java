@@ -22,4 +22,13 @@ public interface IOrderService {
     ServerResponse aliCallback(Map<String,String> params);
 
     ServerResponse queryOrderPayStatus(Integer id, Long orderNo);
+
+    /* ---------------------------后台---------------------------------*/
+    ServerResponse manageList(int pageNum, int pageSize);
+
+    ServerResponse manageSearch(Long orderNO, int pageNum, int pageSize);
+
+    ServerResponse manageDetail(Long orderNo);
+
+    ServerResponse sendGoods(Long orderNo);
 }

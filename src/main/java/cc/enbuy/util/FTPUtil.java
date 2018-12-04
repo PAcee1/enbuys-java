@@ -34,18 +34,26 @@ public class FTPUtil {
         return result;
     }
 
-
+    /**
+     * 上传文件
+     * @param remotePath
+     * @param fileList
+     * @return
+     * @throws IOException
+     */
     private boolean uploadFile(String remotePath,List<File> fileList) throws IOException {
         boolean uploaded = false;
         FileInputStream fis = null;
         //连接FTP服务器
         if(connectServer(this.ip,this.port,this.user,this.pwd)){
             try {
+                //设置文件客户端一些配置
                 ftpClient.changeWorkingDirectory(remotePath);
                 ftpClient.setBufferSize(1024);
                 ftpClient.setControlEncoding("UTF-8");
                 ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
                 ftpClient.enterLocalPassiveMode();
+                //上传文件
                 for(File fileItem : fileList){
                     fis = new FileInputStream(fileItem);
                     ftpClient.storeFile(fileItem.getName(),fis);
@@ -63,8 +71,14 @@ public class FTPUtil {
         return uploaded;
     }
 
-
-
+    /**
+     * 连接ftp图片服务器
+     * @param ip
+     * @param port
+     * @param user
+     * @param pwd
+     * @return
+     */
     private boolean connectServer(String ip,int port,String user,String pwd){
 
         boolean isSuccess = false;
@@ -75,9 +89,9 @@ public class FTPUtil {
         } catch (IOException e) {
             logger.error("连接FTP服务器异常",e);
         }
-        if(!isSuccess){
+        /*if(!isSuccess){
             throw new RuntimeException("图片服务器连接失败");
-        }
+        }*/
         return isSuccess;
     }
 

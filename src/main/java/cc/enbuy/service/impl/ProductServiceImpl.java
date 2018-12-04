@@ -122,6 +122,127 @@ public class ProductServiceImpl implements IProductService {
 
     }
 
+    /*-------------------------- 后台 ----------------------------------- */
+
+    /**
+     * 新增、更新商品
+     * @param product
+     * @return
+     */
+    public ServerResponse saveOrUpdateProduct(Product product) {
+        if (product == null) {
+            //如果为空，返回错误信息
+            return ServerResponse.createByErrorMessage("新增或更新产品参数不正确");
+        }
+        //判断处理图片
+        if (StringUtils.isNotBlank(product.getSubImages())) {
+            String[] subImageArray = product.getSubImages().split(",");
+            if (subImageArray.length > 0) {
+                product.setMainImage(subImageArray[0]);
+            }
+        }
+        //判断是否有商品id，如果有说明新增商品，如果没有有就是新增商品
+        if (product.getId() != null) {
+            int count = productMapper.updateByPrimaryKey(product);
+            if (count > 0) {
+                return ServerResponse.createBySuccess("更新产品成功");
+            } else {
+                return ServerResponse.createByErrorMessage("更新商品失败");
+            }
+        } else {
+            int count = productMapper.insert(product);
+            if (count > 0) {
+                return ServerResponse.createBySuccess("新增商品成功");
+            } else {
+                return ServerResponse.createByErrorMessage("新增商品失败");
+            }
+        }
+    }
+
+    /**
+     * 修改产品状态
+     * @param productId
+     * @param status
+     * @return
+     */
+    public ServerResponse setSaleStatus(Integer productId, Integer status) {
+        if(null == productId || null == status){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Product product = new Product();
+        product.setId(productId);
+        product.setStatus(status);
+        int count = productMapper.updateByPrimaryKeySelective(product);
+        if(count <= 0){
+            return ServerResponse.createByErrorMessage("修改商品状态失败");
+        }
+        return ServerResponse.createBySuccess("修改商品状态成功");
+    }
+
+    /**
+     * 获取商品详情
+     * @param productId
+     * @return
+     */
+    public ServerResponse manageProductDetail(Integer productId) {
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if(product == null){
+            return ServerResponse.createByErrorMessage("商品不存在");
+        }
+        //封装商品信息
+        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        return ServerResponse.createBySuccess(productDetailVo);
+    }
+
+    /**
+     * 获取商品列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public ServerResponse getProductList(int pageNum, int pageSize) {
+        //分页设置
+        PageHelper.startPage(pageNum,pageSize);
+        List<Product> productList = productMapper.selectList();
+        //封装集合
+        List<ProductListVo> productListVoList = Lists.newArrayList();
+        for(Product product : productList) {
+            ProductListVo productListVo = assembleProductListVo(product);
+            productListVoList.add(productListVo);
+        }
+        //封装分页
+        PageInfo pageInfo = new PageInfo(productList);
+        pageInfo.setList(productListVoList);
+        return ServerResponse.createBySuccess(productListVoList);
+    }
+
+    /**
+     * 查询商品
+     * @param productName
+     * @param productId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public ServerResponse searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        //判断按名称是否为空，不为空拼接参数
+        if(StringUtils.isNotBlank(productName)){
+            //用名称查
+            productName = new StringBuilder().append("%").append(productName).append("%").toString();
+        }
+        List<Product> productList = productMapper.selectByNameAndProductId(productName, productId);
+        //封装List
+        List<ProductListVo> productListVoList = new ArrayList<>();
+        for(Product product:productList){
+            ProductListVo productListVo = assembleProductListVo(product);
+            productListVoList.add(productListVo);
+        }
+        PageInfo pageInfo = new PageInfo(productList);
+        pageInfo.setList(productListVoList);
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
     /**
      * 封装商品详细信息
      * @param product
@@ -141,14 +262,14 @@ public class ProductServiceImpl implements IProductService {
         productDetailVo.setStock(product.getStock());
 
         productDetailVo.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://img.happymmall.com/"));
-
+        //处理所处分类，如果为null，设置为根节点
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
         if(category == null){
             productDetailVo.setParentCategoryId(0);//默认根节点
         }else{
             productDetailVo.setParentCategoryId(category.getParentId());
         }
-
+        //处理时间问题
         productDetailVo.setCreateTime(DateTimeUtil.dateToStr(product.getCreateTime()));
         productDetailVo.setUpdateTime(DateTimeUtil.dateToStr(product.getUpdateTime()));
         return productDetailVo;

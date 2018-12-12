@@ -213,7 +213,7 @@ public class ProductServiceImpl implements IProductService {
         //封装分页
         PageInfo pageInfo = new PageInfo(productList);
         pageInfo.setList(productListVoList);
-        return ServerResponse.createBySuccess(productListVoList);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     /**

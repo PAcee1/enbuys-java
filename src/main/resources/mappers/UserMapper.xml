@@ -210,8 +210,15 @@
     and id != #{userId}
   </select>
 
+  <select id="selectCount"  resultType="int">
+    select count(1) from mmall_user
+  </select>
 
-
-
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from mmall_user
+    ORDER BY  create_time desc
+  </select>
 
 </mapper>

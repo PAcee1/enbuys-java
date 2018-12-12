@@ -7,10 +7,14 @@ import cc.enbuy.dao.UserMapper;
 import cc.enbuy.pojo.User;
 import cc.enbuy.service.IUserService;
 import cc.enbuy.util.MD5Util;
+import cc.enbuy.vo.OrderVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -258,6 +262,23 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
+    }
+
+    /**
+     * 获取用户list
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public ServerResponse manageList(int pageNum, int pageSize) {
+        //分页
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> userList = userMapper.selectAllUser();
+        //封装结果集
+        //List<OrderVo> orderVoList = assembleOrderVoList(orderList,null);
+        PageInfo pageInfo = new PageInfo(userList);
+        pageInfo.setList(userList);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
 

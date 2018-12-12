@@ -182,6 +182,7 @@
     SELECT
     <include refid="Base_Column_List"/>
     from mmall_product
+    where status != 3
     ORDER BY id asc
   </select>
 
@@ -214,6 +215,10 @@
         #{item}
       </foreach>
     </if>
+  </select>
+
+  <select id="selectCount" resultType="int">
+    select count(1) from mmall_product
   </select>
 
 </mapper>

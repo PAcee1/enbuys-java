@@ -29,4 +29,5 @@ public interface OrderMapper {
 
     //获取全部订单
     List<Order> selectAllOrder();
+    int selectCount();
 }

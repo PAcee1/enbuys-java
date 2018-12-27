@@ -208,6 +208,7 @@
     where status = 1
     <if test="productName != null">
       and name like #{productName}
+      or subtitle like #{productName}
     </if>
     <if test="categoryIdList != null" >
       and category_id in

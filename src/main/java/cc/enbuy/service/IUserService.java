@@ -28,4 +28,8 @@ public interface IUserService {
     ServerResponse checkAdminRole(User user);
 
     ServerResponse manageList(int pageNum, int pageSize);
+
+    ServerResponse manageDetail(int userId);
+
+    ServerResponse setUserRole(int userId,int role);
 }

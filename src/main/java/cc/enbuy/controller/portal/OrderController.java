@@ -121,6 +121,12 @@ public class OrderController {
         return orderService.list(user.getId(),pageNum,pageSize);
     }
 
+    @RequestMapping("category.do")
+    @ResponseBody
+    public ServerResponse getCategory(){
+        return orderService.getCategory();
+    }
+
     /* ---------------------------支付---------------------------------*/
 
     @RequestMapping("pay.do")
@@ -181,7 +187,7 @@ public class OrderController {
     }
 
     /**
-     * 修改订单状态为已支付
+     * 查询订单支付状态
      * @param session
      * @return
      */

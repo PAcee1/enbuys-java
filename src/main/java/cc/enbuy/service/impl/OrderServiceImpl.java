@@ -9,10 +9,7 @@ import cc.enbuy.util.BigDecimalUtil;
 import cc.enbuy.util.DateTimeUtil;
 import cc.enbuy.util.FTPUtil;
 import cc.enbuy.util.PropertiesUtil;
-import cc.enbuy.vo.OrderItemVo;
-import cc.enbuy.vo.OrderProductVo;
-import cc.enbuy.vo.OrderVo;
-import cc.enbuy.vo.ShippingVo;
+import cc.enbuy.vo.*;
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.alipay.demo.trade.config.Configs;
@@ -70,6 +67,8 @@ public class OrderServiceImpl implements IOrderService {
     private ShippingMapper shippingMapper;
     @Autowired
     private PayInfoMapper payInfoMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     /**
      * 创建订单
@@ -345,6 +344,14 @@ public class OrderServiceImpl implements IOrderService {
             return ServerResponse.createByErrorMessage("发货失败");
         }
         return ServerResponse.createBySuccess("发货成功");
+    }
+
+    @Override
+    public ServerResponse getCategory() {
+        List<Category> categoryList = categoryMapper.selectParent();
+        CategoryVo vo = new CategoryVo();
+        vo.setCartVoList(categoryList);
+        return ServerResponse.createBySuccess(vo);
     }
 
     /* 封装订单Vo的集合 */
@@ -645,7 +652,6 @@ public class OrderServiceImpl implements IOrderService {
                 return ServerResponse.createByErrorMessage("不支持的交易状态，交易返回异常!!!");
         }
     }
-
 
     // 简单打印应答
     private void dumpResponse(AlipayResponse response) {

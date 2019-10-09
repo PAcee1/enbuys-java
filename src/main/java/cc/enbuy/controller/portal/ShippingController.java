@@ -49,6 +49,7 @@ public class ShippingController {
         return shippingService.delete(user.getId(),shippingId);
     }
 
+
     @RequestMapping("update.do")
     @ResponseBody
     public ServerResponse update(HttpSession session, Shipping shipping){

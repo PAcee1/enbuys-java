@@ -233,6 +233,7 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createBySuccessMsg("用户信息修改成功");
     }
 
+
     /**
      * 获取当前用户信息
      * @param id
@@ -281,5 +282,39 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    /**
+     * 根据id查询用户详细信息
+     * @param userId
+     * @return
+     */
+    @Override
+    public ServerResponse manageDetail(int userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        //判断user是否存在
+        if(user == null){
+            ServerResponse.createByErrorMessage("用户不存在");
+        }
+        //设置密码为空
+        user.setPassword(StringUtils.EMPTY);
+        return ServerResponse.createBySuccess(user);
+    }
+
+    /**
+     * 设置取消管理员
+     * @param userId
+     * @param role
+     * @return
+     */
+    public ServerResponse setUserRole(int userId, int role) {
+        User user = new User();
+        user.setId(userId);
+        user.setRole(role);
+        // 根据userID修改权限
+        int count = userMapper.updateByPrimaryKeySelective(user);
+        if(count == 0){
+            return ServerResponse.createBySuccess("更新个人信息成功",user);
+        }
+        return ServerResponse.createBySuccessMsg("用户信息修改成功");
+    }
 
 }

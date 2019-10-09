@@ -58,4 +58,42 @@ public class UserManageController {
         }
         return userService.manageList(pageNum,pageSize);
     }
+
+    /**
+     * 用户详情
+     * @param session
+     * @param userId
+     * @return
+     */
+    @RequestMapping("detail.do")
+    @ResponseBody
+    public  ServerResponse detail(HttpSession session,int userId){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if(null == user){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
+        }
+        if(!userService.checkAdminRole(user).isSuccess()){
+            return ServerResponse.createByErrorMessage("无权限操作");
+        }
+        return userService.manageDetail(userId);
+    }
+
+    /**
+     * 设置管理员
+     * @param session
+     * @param userId
+     * @return
+     */
+    @RequestMapping("setUserRole.do")
+    @ResponseBody
+    public  ServerResponse setUserRole(HttpSession session,int userId,int role){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if(null == user){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
+        }
+        if(!userService.checkAdminRole(user).isSuccess()){
+            return ServerResponse.createByErrorMessage("无权限操作");
+        }
+        return userService.setUserRole(userId,role);
+    }
 }

@@ -76,8 +76,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main main = new Main();
-
+        //Main main = new Main();
+        Map<String,Object> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        map.put("CLS",list);
+        list.add("b");
+        list.add("c");
+        map.put("SCS",list);
+        System.out.println(map.get("CLS"));
+        System.out.println(map.get("SCS"));
         // 系统商商测试交易保障接口api
         //        main.test_monitor_sys();
 
@@ -97,7 +105,7 @@ public class Main {
         //        main.test_trade_refund();
 
         // 测试当面付2.0生成支付二维码
-        main.test_trade_precreate();
+        // main.test_trade_precreate();
     }
 
     // 测试系统商交易保障调度

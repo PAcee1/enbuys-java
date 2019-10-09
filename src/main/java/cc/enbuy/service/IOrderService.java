@@ -31,4 +31,6 @@ public interface IOrderService {
     ServerResponse manageDetail(Long orderNo);
 
     ServerResponse sendGoods(Long orderNo);
+
+    ServerResponse getCategory();
 }
